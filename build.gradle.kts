@@ -21,6 +21,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation ("org.jsoup:jsoup:1.14.3")
+	implementation ("org.seleniumhq.selenium:selenium-java:4.0.0")
+	implementation ("io.github.bonigarcia:webdrivermanager:5.0.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
