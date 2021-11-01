@@ -1,5 +1,6 @@
 package com.example.topsaleparser.controller
 
+import com.example.topsaleparser.domain.Product
 import com.example.topsaleparser.domain.ProductType
 import com.example.topsaleparser.service.ProductService
 import org.springframework.beans.factory.annotation.Value
@@ -17,15 +18,26 @@ class Controller(
 
     @CrossOrigin("http://localhost:8000")
     @GetMapping("/notebook")
-    fun getNotebooks(request: HttpServletRequest) =
-            if (request.remoteAddr == frontEndIp)
-                service.getProducts(ProductType.NOTEBOOK)
-            else throw Exception()
+    fun getNotebooks(request: HttpServletRequest): List<Product> {
+        validateIpAddress(request)
+        return service.getProducts(ProductType.NOTEBOOK)
+    }
 
-
+    @CrossOrigin("http://localhost:8000")
     @GetMapping("/phone")
-    fun getPhones() = service.getProducts(ProductType.PHONE)
+    fun getPhones(request: HttpServletRequest): List<Product> {
+        validateIpAddress(request)
+        return service.getProducts(ProductType.PHONE)
+    }
 
+    @CrossOrigin("http://localhost:8000")
     @GetMapping("/tvset")
-    fun getTvsets() = service.getProducts(ProductType.TV_SET)
+    fun getTvsets(request: HttpServletRequest): List<Product> {
+        validateIpAddress(request)
+        return service.getProducts(ProductType.TV_SET)
+    }
+
+    fun validateIpAddress(httpRequest: HttpServletRequest) {
+        if (httpRequest.remoteAddr != frontEndIp) throw Exception()
+    }
 }
