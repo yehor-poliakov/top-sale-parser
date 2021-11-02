@@ -18,6 +18,6 @@ fun Element.getOldPrice(oldPrice: String): Int {
     return if (result.isBlank()) 0 else result.toInt()
 }
 
-fun Element.getLink(link: String): String =
+fun Element.getProductPageLink(link: String): String =
     select(link)
         .attr("href")

@@ -3,8 +3,8 @@ package com.example.topsaleparser.parser
 import com.example.topsaleparser.domain.Product
 import com.example.topsaleparser.domain.ProductType
 import com.example.topsaleparser.domain.getCurrentPrice
-import com.example.topsaleparser.domain.getLink
 import com.example.topsaleparser.domain.getOldPrice
+import com.example.topsaleparser.domain.getProductPageLink
 import com.example.topsaleparser.domain.getTitle
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -14,43 +14,45 @@ import org.springframework.stereotype.Component
 @Component
 class TechParser {
 
-    private val baseDomain = "https://rozetka.com.ua/ua/"
-    private val discountDomain = "/sort=action/"
-    private val listedProduct = ".goods-tile__inner"
-    private val junkElementsClass = "small"
-    private val listedProductLink = ".goods-tile__picture"
-    private val listedProductTitle = ".goods-tile__title"
-    private val listedProductPrice = ".goods-tile__price-value"
-    private val listedProductOldPrice = ".goods-tile__price--old"
-    private val productImage = ".picture-container__picture"
+    companion object {
+        private const val BASE_DOMAIN = "https://rozetka.com.ua/ua/"
+        private const val DISCOUNT_DOMAIN = "/sort=action/"
+        private const val LISTED_PRODUCT = ".goods-tile__inner"
+        private const val JUNK_ELEMENT = "small"
+        private const val LISTED_PRODUCT_LINK = ".goods-tile__picture"
+        private const val LISTED_PRODUCT_TITLE = ".goods-tile__title"
+        private const val LISTED_PRODUCT_PRICE = ".goods-tile__price-value"
+        private const val LISTED_PRODUCT_OLD_PRICE = ".goods-tile__price--old"
+        private const val PRODUCT_IMAGE = ".picture-container__picture"
+    }
 
     fun parseProduct(productType: ProductType): List<Product> {
-        val sourceLink = getSourceLink(productType)
+        val sourceLink = buildSourceLink(productType)
         val sourceDocument = Jsoup.connect(sourceLink).get()
-        val productElements: Elements = sourceDocument.select(listedProduct)
-        val result = mutableListOf<Product>()
+        val productElements: Elements = sourceDocument.select(LISTED_PRODUCT)
+        val products = mutableListOf<Product>()
         productElements
             .forEach {
-                it.select(junkElementsClass).remove()
-                val productPageLink = it.getLink(listedProductLink)
-                result.add(
+                it.select(JUNK_ELEMENT).remove()
+                val productPageLink = it.getProductPageLink(LISTED_PRODUCT_LINK)
+                products.add(
                     Product(
-                        it.getTitle(listedProductTitle),
-                        it.getCurrentPrice(listedProductPrice).toInt(),
-                        it.getOldPrice(listedProductOldPrice),
-                        getImgLink(fetchProductSource(productPageLink), productImage),
+                        it.getTitle(LISTED_PRODUCT_TITLE),
+                        it.getCurrentPrice(LISTED_PRODUCT_PRICE).toInt(),
+                        it.getOldPrice(LISTED_PRODUCT_OLD_PRICE),
+                        getImgLink(fetchProductSource(productPageLink), PRODUCT_IMAGE),
                         productPageLink
                     )
                 )
             }
-        return result
+        return products
     }
 
     fun fetchProductSource(singleProductLink: String): Document = Jsoup.connect(singleProductLink).get()
 
-    fun getSourceLink(productType: ProductType): String {
+    fun buildSourceLink(productType: ProductType): String {
         val typeLink = productType.link
-        return "$baseDomain$typeLink/$discountDomain"
+        return "$BASE_DOMAIN$typeLink/$DISCOUNT_DOMAIN"
     }
 
     fun  getImgLink(source: Document, productLink: String): String =

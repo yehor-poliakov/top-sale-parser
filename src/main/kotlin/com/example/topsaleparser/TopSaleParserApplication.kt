@@ -9,4 +9,3 @@ class TopSaleParserApplication
 fun main(args: Array<String>) {
     runApplication<TopSaleParserApplication>(*args)
 }
-

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 class Controller(
-        val service: ProductService
+    val service: ProductService
 ) {
     @Value("\${client.address}")
     lateinit var frontEndIp: String
