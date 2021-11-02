@@ -35,11 +35,12 @@ class TechParser {
             .forEach {
                 it.select(JUNK_ELEMENT).remove()
                 val productPageLink = it.getProductPageLink(LISTED_PRODUCT_LINK)
+                val currentPrice = it.getCurrentPrice(LISTED_PRODUCT_PRICE).toInt()
                 products.add(
                     Product(
                         it.getTitle(LISTED_PRODUCT_TITLE),
-                        it.getCurrentPrice(LISTED_PRODUCT_PRICE).toInt(),
-                        it.getOldPrice(LISTED_PRODUCT_OLD_PRICE),
+                        currentPrice,
+                        it.getOldPrice(LISTED_PRODUCT_OLD_PRICE, currentPriceg),
                         getImgLink(fetchProductSource(productPageLink), PRODUCT_IMAGE),
                         productPageLink
                     )

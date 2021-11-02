@@ -11,11 +11,11 @@ fun Element.getCurrentPrice(currentPrice: String): String =
         .text()
         .replace(" ", "")
 
-fun Element.getOldPrice(oldPrice: String): Int {
+fun Element.getOldPrice(oldPrice: String, currentPrice: Int): Int {
     val result = select(oldPrice)
         .text()
         .replace(" ", "")
-    return if (result.isBlank()) 0 else result.toInt()
+    return if (result.isBlank()) currentPrice else result.toInt()
 }
 
 fun Element.getProductPageLink(link: String): String =
