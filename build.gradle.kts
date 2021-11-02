@@ -23,6 +23,10 @@ dependencies {
 	implementation ("org.jsoup:jsoup:1.14.3")
 	implementation ("io.github.bonigarcia:webdrivermanager:5.0.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+	testImplementation("org.amshove.kluent:kluent:1.61")
+	testImplementation("io.mockk:mockk:1.10.0")
+	testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
 }
 
 tasks.withType<KotlinCompile> {
