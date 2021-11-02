@@ -32,14 +32,14 @@ class TechParser {
         productElements
             .forEach {
                 it.select(junkElementsClass).remove()
-                val link = it.getLink(listedProductLink)
+                val productPageLink = it.getLink(listedProductLink)
                 result.add(
                     Product(
                         it.getTitle(listedProductTitle),
                         it.getCurrentPrice(listedProductPrice).toInt(),
                         it.getOldPrice(listedProductOldPrice),
-                        link,
-                        getImgLink(fetchProductSource(link), productImage)
+                        getImgLink(fetchProductSource(productPageLink), productImage),
+                        productPageLink
                     )
                 )
             }
@@ -53,7 +53,7 @@ class TechParser {
         return "$baseDomain$typeLink/$discountDomain"
     }
 
-    fun getImgLink(source: Document, productLink: String): String =
+    fun  getImgLink(source: Document, productLink: String): String =
         source
             .select(productLink)
             .attr("src")
